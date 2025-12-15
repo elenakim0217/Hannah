@@ -15,6 +15,7 @@
             background-color: #333; 
             overflow: hidden;
             font-family: 'Wanted Sans Variable', -apple-system, sans-serif;
+            user-select: none; 
         }
 
         /* [2. 메인 컨테이너] */
@@ -22,7 +23,7 @@
             position: relative;
             width: 1920px; 
             height: 1080px; 
-            background-color: #f0f0f0; /* 배경색이 있어도 이미지가 위에 쌓이면 가려집니다 */
+            background-color: #f0f0f0; 
             overflow: hidden; 
         }
 
@@ -33,35 +34,48 @@
             cursor: pointer;
             transition: transform 0.3s ease;
         }
+        
         .layer-img:hover {
             transform: scale(1.05);
-            z-index: 100 !important; /* 호버 시 확실하게 위로 */
         }
 
-        /* =========================================================
-           [A. 배경 레이어 (bg1 ~ bg4)] - 수정됨!
-           음수를 쓰지 않고 1부터 쌓아 올립니다. 무조건 보입니다.
-           =========================================================
-        */
+        /* [A. 배경 레이어] */
+        .bg-img {
+            transform-origin: 50% 50%; 
+            will-change: transform;
+        }
+
         #bg1, #bg2, #bg3, #bg4 {
             width: 1920px; height: 1080px;
             top: 0; left: 0;
         }
-        /* 순서대로 쌓기 */
         #bg1 { z-index: 1; } 
         #bg2 { z-index: 2; }
         #bg3 { z-index: 3; } 
         #bg4 { z-index: 4; }
 
+        /* 젤리 글리치 애니메이션 */
+        @keyframes elastic-jelly {
+            0% { transform: translateX(0) skewX(0) scale(1, 1); }
+            30% { transform: translateX(-60px) skewX(-2deg) scale(0.95, 1.05); } 
+            55% { transform: translateX(40px) skewX(1deg) scale(1.02, 0.98); }   
+            75% { transform: translateX(-15px) skewX(-0.5deg) scale(1, 1); }
+            100% { transform: translateX(0) skewX(0) scale(1, 1); }
+        }
 
-        /* =========================================================
-           [B. 추가 오브젝트 (bg5 ~ bg15)]
-           배경(4)보다 높은 5층에 배치합니다.
-           =========================================================
-        */
+        .glitch-active {
+            animation: elastic-jelly 0.8s cubic-bezier(0.25, 1.2, 0.5, 1) both;
+            transition: none !important; 
+        }
+
+        #bg1.glitch-active { animation-duration: 0.75s; }
+        #bg2.glitch-active { animation-duration: 0.8s; }
+        #bg3.glitch-active { animation-duration: 0.85s; }
+        #bg4.glitch-active { animation-duration: 0.78s; }
+
+
+        /* [B. 추가 오브젝트] */
         .extra-img { z-index: 5; }
-
-        /* [위치 직접 수정 구역] */
         #bg5 { width: 150px; top: 100px; left: 100px; }
         #bg6 { width: 120px; top: 200px; left: 300px; }
         #bg7 { width: 180px; top: 150px; left: 1500px; }
@@ -75,25 +89,24 @@
         #bg15 { width: 100px; top: 10px; left: 450px; }
 
 
-        /* =========================================================
-           [C. 텍스트 위치]
-           배경보다 훨씬 위(20층)에 배치하여 가려지지 않게 합니다.
-           =========================================================
-        */
+        /* [C. 좌측 메인 텍스트 (Human Protocol)] */
         #text-pos-container {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            z-index: 20; /* 텍스트가 배경 위에 보이도록 */
+            z-index: 20; 
             pointer-events: none;
             text-align: left;
-            left: 70px; /* 왼쪽 끝 */
-            max-width: 600px; 
+            left: 70px; 
+            
+            /* [수정 1] 텍스트가 잘리지 않도록 너비 증가 및 단어 끊김 방지 */
+            max-width: 1000px; 
+            word-break: keep-all; /* 단어 단위로 줄바꿈 (뚝뚝 끊김 방지) */
         }
-
+        
         .jagged-bg {
             background-color: #ffffff; color: #000000;            
-            line-height: 1.55; padding: 5px 10px; 
+            line-height: 1.6; padding: 5px 10px; 
             font-family: 'Wanted Sans Variable', sans-serif;
             font-weight: 700; font-size: 18px; 
             display: inline;
@@ -107,38 +120,48 @@
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
 
-        /* =========================================================
-           [D. Hannah & 시계 (중앙 고정 래퍼)]
-           배경(5)보다 높은 10층에 배치합니다.
-           =========================================================
-        */
+        /* [D. Hannah & 시계] */
         .center-wrapper {
             position: absolute;
             width: 800px; height: 800px;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 10; /* Hannah 그룹 */
+            z-index: 100; 
             pointer-events: none; 
         }
         .center-wrapper img { pointer-events: auto; }
 
-        #layer1 { width: 350px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; }
-        #layer1:hover { transform: translate(-50%, -50%) scale(1.05); }
-        #layer2 { width: 350px; top: 415px; left: 225px; z-index: 2; }
-        #layer3 { width: 95px; top: 270px; left: 400px; z-index: 3; }
+        #layer1 { 
+            width: 350px; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: 10; 
+        }
+        #layer1:hover { 
+            transform: translate(-50%, -50%) scale(1.05); 
+            z-index: 11; 
+        }
+
+        #layer2 { 
+            width: 350px; top: 415px; left: 225px; 
+            z-index: 20; 
+        }
+        #layer2:hover { z-index: 21; }
+
+        #layer3 { 
+            width: 95px; top: 270px; left: 400px; 
+            z-index: 30; 
+        }
+        #layer3:hover { z-index: 31; }
         
         #clock-pos-container {
             position: absolute; top: 75%; left: 50%; 
-            transform: translate(-50%, -50%); z-index: 50;
+            transform: translate(-50%, -50%); 
+            z-index: 50; 
             pointer-events: none; text-align: center;
         }
 
 
-        /* =========================================================
-           [E. 화면 보호기]
-           가장 높은 999층
-           =========================================================
-        */
+        /* [E. 화면 보호기] */
         #layer4 {
             position: absolute; width: 350px; top: 50%; left: 50%;
             transform: translate(-50%, -50%); object-fit: contain; 
@@ -147,12 +170,40 @@
         }
         #layer4.active { opacity: 1; }
 
+
+        /* [F. NEW - 호버 설명 텍스트 (화면 우측 배치)] */
+        #hover-description {
+            position: absolute;
+            top: 50%;
+            left: 62%; /* 중앙에서 약간 오른쪽 */
+            transform: translateY(-50%);
+            width: 450px; /* 적절한 너비 */
+            z-index: 200; /* 이미지들보다 위에 표시 */
+            
+            background-color: rgba(255, 255, 255, 0.9); /* 가독성을 위한 반투명 배경 */
+            padding: 20px;
+            border: 2px solid #000;
+            
+            font-family: 'Wanted Sans Variable', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.6;
+            word-break: keep-all; /* 한국어 단어 끊김 방지 */
+            
+            opacity: 0; /* 평소엔 숨김 */
+            pointer-events: none; /* 마우스 이벤트 통과 */
+            transition: opacity 0.3s ease;
+        }
+        /* 텍스트가 있을 때만 보이도록 클래스로 제어 */
+        #hover-description.visible {
+            opacity: 1;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="image-container">
-        
         <img src="bg1.png" id="bg1" class="bg-img" alt="Background 1">
         <img src="bg2.png" id="bg2" class="bg-img" alt="Background 2">
         <img src="bg3.png" id="bg3" class="bg-img" alt="Background 3">
@@ -173,6 +224,8 @@
         <div id="text-pos-container">
             <span id="typing-target" class="jagged-bg cursor"></span>
         </div>
+
+        <div id="hover-description"></div>
 
         <div class="center-wrapper">
             <img src="hannah1.png" id="layer1" class="layer-img" onclick="goToLink(1)" alt="Hannah 1">
@@ -210,8 +263,9 @@
             idleTimer = setTimeout(showScreensaver, idleLimit);
         }
 
-        // 3. 시계 & 호버
+        // 3. 시계 & 호버 텍스트 기능 통합
         let timeOffset = 0; 
+
         function startClock() {
             const clockText = document.getElementById('clock-text');
             function updateTime() {
@@ -228,6 +282,16 @@
             const layer2 = document.getElementById('layer2');
             const layer3 = document.getElementById('layer3');
             const clockText = document.getElementById('clock-text');
+            
+            // 설명 텍스트 박스
+            const descBox = document.getElementById('hover-description');
+
+            // 요청하신 텍스트 내용
+            const texts = {
+                1: "디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠, 그리고 누군가의 얼굴을 긁어낸 날카로운 칼날까지. 권력은 눈에 거슬리는 이들을 처형하고, 남겨진 사진 위에서 한 번 더 살해했다. 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해, 껍데기 뒤에 숨겨진 삭제된 진실을 발굴한다. 기록에서 지워진다는 것은 곧 존재의 소멸을 의미한다. 이것은 단순한 이미지의 수정이 아니다. 기억에 대한 사형 선고다.",
+                2: "안녕 지우~",
+                3: "‘기호를 활용해 외계인과 소통할 수 있을까?’ 인간의 읽기와 쓰기 체계 중 하나인 기호가 과연 상호작용이 가능한지를 실험해보는 도구 형태의 웹사이트이다. <br><br>도구적 형태로 간접 소통해봄으로써 어쩌면 외계인과 소통은 불가능할지도 모르는 전제 하에 인간의 상상력의 한계를 넘어 상상해보고, 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
+            };
 
             function getKstString(offset) {
                 const now = new Date();
@@ -235,9 +299,33 @@
                 return target.toLocaleTimeString('en-GB', { timeZone: 'Asia/Seoul', hour12: false });
             }
 
-            layer1.addEventListener('mouseenter', () => { timeOffset = 0; clockText.innerText = getKstString(0); });
-            layer2.addEventListener('mouseenter', () => { timeOffset = -20; clockText.innerText = getKstString(-20); });
-            layer3.addEventListener('mouseenter', () => { timeOffset = 12; clockText.innerText = getKstString(12); });
+            // [호버 이벤트 함수]
+            function onHover(layerId, offset) {
+                // 1. 시계 변경
+                timeOffset = offset;
+                clockText.innerText = getKstString(offset);
+
+                // 2. 설명 텍스트 표시
+                if(texts[layerId]) {
+                    descBox.innerHTML = texts[layerId]; // HTML 태그(<br>) 인식을 위해 innerHTML 사용
+                    descBox.classList.add('visible');
+                }
+            }
+
+            function onLeave() {
+                // 마우스 나가면 설명 텍스트 숨김
+                descBox.classList.remove('visible');
+            }
+
+            // 이벤트 리스너 등록
+            layer1.addEventListener('mouseenter', () => onHover(1, 0));
+            layer1.addEventListener('mouseleave', onLeave);
+
+            layer2.addEventListener('mouseenter', () => onHover(2, -20));
+            layer2.addEventListener('mouseleave', onLeave);
+
+            layer3.addEventListener('mouseenter', () => onHover(3, 12));
+            layer3.addEventListener('mouseleave', onLeave);
         }
 
         // 4. 타이핑 효과
@@ -262,8 +350,61 @@
             }
         }
 
+        // 5. 배경 젤리 모션
+        function startGlitchEffect() {
+            const bgs = document.querySelectorAll('.bg-img'); 
+            setInterval(() => {
+                bgs.forEach(bg => {
+                    bg.classList.add('glitch-active');
+                    bg.addEventListener('animationend', () => {
+                        bg.classList.remove('glitch-active');
+                    }, { once: true });
+                });
+            }, 3000); 
+        }
+
+        // 6. 배경 드래그 모션
+        function setupBackgroundDrag() {
+            const bgs = document.querySelectorAll('.bg-img'); 
+            let isDragging = false;
+            let startX = 0;
+
+            document.addEventListener('mousedown', (e) => {
+                if (e.button !== 0) return;
+                isDragging = true;
+                startX = e.clientX;
+                bgs.forEach(bg => bg.style.transition = 'none');
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const currentX = e.clientX;
+                const moveX = (currentX - startX) * 0.6; 
+                bgs.forEach(bg => {
+                    bg.style.transform = `translateX(${moveX}px)`;
+                });
+            });
+
+            const stopDragging = () => {
+                if (!isDragging) return;
+                isDragging = false;
+                bgs.forEach(bg => {
+                    bg.style.transition = 'transform 0.5s ease-out';
+                    bg.style.transform = 'translateX(0)';
+                });
+            };
+
+            document.addEventListener('mouseup', stopDragging);
+            document.addEventListener('mouseleave', stopDragging);
+        }
+
         window.onload = function() {
-            resetTimer(); startClock(); setupHoverEffects(); startTyping();
+            resetTimer(); 
+            startClock(); 
+            setupHoverEffects(); 
+            startTyping();
+            startGlitchEffect(); 
+            setupBackgroundDrag(); 
         };
         document.onmousemove = resetTimer; document.onkeypress = resetTimer;
         document.ontouchstart = resetTimer; document.onclick = resetTimer;
