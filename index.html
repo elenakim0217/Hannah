@@ -12,7 +12,7 @@
             margin: 0; padding: 0;
             width: 100vw; height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            background-color: #333; 
+            background-color: #000000; /* [수정됨] 배경 검은색 */
             overflow: hidden;
             font-family: 'Wanted Sans Variable', -apple-system, sans-serif;
             user-select: none; 
@@ -23,7 +23,7 @@
             position: relative;
             width: 1920px; 
             height: 1080px; 
-            background-color: #f0f0f0; 
+            background-color: #000000; /* [수정됨] 컨테이너 배경도 검은색 */
             overflow: hidden; 
         }
 
@@ -39,7 +39,7 @@
             cursor: pointer;
         }
 
-        /* [배경 및 오브젝트 위치 수정 영역] */
+        /* [배경 및 오브젝트 위치 수정] */
         #bg1, #bg2, #bg3, #bg4 { width: 1920px; height: 1080px; top: 0; left: 0; }
         #bg1 { z-index: 1; }
         #bg2 { z-index: 2; }
@@ -47,10 +47,6 @@
         #bg4 { z-index: 4; }
 
         .extra-img { z-index: 5; pointer-events: none; }
-        /* click 이벤트를 받기 위해 pointer-events를 auto로 변경할 수도 있지만, 
-           여기서는 JS에서 대상을 잡기 위해 클래스 구조만 유지합니다. 
-           (아래 JS에서 상호작용을 위해 필요한 요소는 pointer-events: auto 처리가 필요할 수 있음) 
-           하지만 배경 요소라 클릭 통과가 자연스러우므로 hover 감지만 주로 동작합니다. */
         
         #bg5 { width: 150px; top: 100px; left: 100px; }
         #bg6 { width: 120px; top: 200px; left: 300px; }
@@ -63,7 +59,7 @@
         #bg14 { width: 100px; top: 10px; left: 340px; }
         
         /* [물방울 오브젝트] */
-        .bubble-img { z-index: 6; pointer-events: auto; /* 상호작용을 위해 auto */ will-change: transform; }
+        .bubble-img { z-index: 6; pointer-events: auto; will-change: transform; }
         #bg13 { width: 60px; }
         #bg15 { width: 70px; }
         #bg16 { width: 50px; }
@@ -148,7 +144,7 @@
             position: absolute; top: 75%; left: 50%;
             transform: translateX(-50%); z-index: 9999;
             text-align: center; width: 100%; 
-            pointer-events: auto; /* 상호작용(호버/클릭)을 위해 auto 설정 */
+            pointer-events: auto; 
         }
         #footer-text {
             background-color: #ffffff; color: #000000;
@@ -156,7 +152,7 @@
             padding: 5px 15px;
             box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
             transition: opacity 0.5s ease-in-out; opacity: 0; 
-            cursor: pointer; /* 클릭 가능 표시 */
+            cursor: pointer; 
         }
         #footer-text.show { opacity: 1; }
 
@@ -221,8 +217,8 @@
         // 1. 링크 이동
         function goToLink(layerNumber) {
             let url = "";
-            if (layerNumber === 1) url = "https://www.google.com"; 
-            else if (layerNumber === 2) url = "https://www.youtube.com"; 
+            if (layerNumber === 1) url = " https://ieunseo938.github.io/retouched_final/"; 
+            else if (layerNumber === 2) url = "https://jiuu02.github.io/present/"; 
             else if (layerNumber === 3) url = "https://elenakim0217.github.io/Golden-Indexed/"; 
             if (url) window.open(url, '_blank'); 
         }
@@ -238,7 +234,7 @@
             idleTimer = setTimeout(showScreensaver, idleLimit);
         }
 
-        // 3. [배경음악 강제 재생]
+        // 3. 배경음악
         let musicStarted = false;
         function forcePlayMusic() {
             if (!musicStarted) {
@@ -249,7 +245,7 @@
             }
         }
 
-        // 4. [수정됨] 정보 텍스트 타이핑 효과 + 상호작용 리셋
+        // 4. 정보 텍스트 타이핑 효과
         const typingText = `Human Protocol: Hannah
 왜곡의 최대 경계선까지 나아가보자.
 왜곡을 해체하고, 진실도 해체한다.
@@ -264,9 +260,8 @@
         let typingTimer = null;
         let loopTimer = null;
 
-        // (1) 타이핑 실행 함수
         function runTyping() {
-            if (typingTimer) clearTimeout(typingTimer); // 기존 타이핑 중단
+            if (typingTimer) clearTimeout(typingTimer);
             
             typeIndex = 0;
             if(typingTarget) typingTarget.textContent = "";
@@ -274,7 +269,6 @@
             typeWriter();
         }
 
-        // (2) 글자 작성
         function typeWriter() {
             if (typingTarget && typeIndex < typingText.length) {
                 typingTarget.textContent += typingText.charAt(typeIndex);
@@ -283,27 +277,19 @@
             }
         }
 
-        // (3) 루프 시작 및 리셋 관리
         function startTypingLoop() {
-            runTyping(); // 즉시 실행
-
-            if (loopTimer) clearInterval(loopTimer); // 기존 루프 제거
-            loopTimer = setInterval(runTyping, 10000); // 10초마다 반복 재예약
+            runTyping(); 
+            if (loopTimer) clearInterval(loopTimer); 
+            loopTimer = setInterval(runTyping, 12000); 
         }
 
-        // (4) [NEW] 배경/자막 상호작용 시 타이핑 리셋
         function setupTypingInteractions() {
-            // 배경 이미지(bg), 오브젝트(extra), 물방울(bubble), 푸터 컨테이너 선택
-            const targets = document.querySelectorAll('.bg-img, .extra-img, .bubble-img, #footer-text-container');
-            
+            const targets = document.querySelectorAll('.extra-img, .bubble-img, #footer-text-container');
             targets.forEach(el => {
-                // 마우스 올리면 리셋
                 el.addEventListener('mouseenter', startTypingLoop);
-                // 클릭하면 리셋
                 el.addEventListener('click', startTypingLoop);
             });
         }
-
 
         // 5. 호버 효과 & 푸터 오버라이드
         let isFooterOverride = false;
@@ -315,9 +301,9 @@
             const footerText = document.getElementById('footer-text'); 
 
             const texts = {
-                1: "Untouched,이은서 <br><br> 디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠... <br> 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해 진실을 발굴한다.",
-                2: "CONTROLLED SPECTRUM : 통제된 스펙트럼, 박지우 <br><br> 색은 생존과 직결된 '통제와 억압의 도구'다. 19세기의 맹독성 초록, 현대의 파란 스크린... <br> 아름다움 뒤에 은폐된 색의 권력 구조를 고발한다.",
-                3: "Golden Indexed, 김채린 <br><br> ‘기호를 활용해 외계인과 소통할 수 있을까?’ <br> 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
+                  1: "Untouched, 이은서 <br> <br> 디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠, 그리고 누군가의 얼굴을 긁어낸 날카로운 칼날까지. 권력은 눈에 거슬리는 이들을 처형하고, 남겨진 사진 위에서 한 번 더 살해했다. <br> 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해, 껍데기 뒤에 숨겨진 삭제된 진실을 발굴한다. 기록에서 지워진다는 것은 곧 존재의 소멸을 의미한다. 이것은 단순한 이미지의 수정이 아니다. 기억에 대한 사형 선고다.",
+                2: "CONTROLLED SPECTRUM : 통제된 스펙트럼, 박지우 <br><br> 본 프로젝트는 '색은 아름답다'는 인류의 오랜 낭만적 통념을 해체하고, 색을 생존과 직결된 '통제와 억압의 도구'로 재정의한다. 우리는 시대를 관통하며 가해진 색의 통제 방식을 추적한다. 19세기의 '초록'은 맹독성 비소로 인간의 육체를 물리적으로 파괴했고, 현대의 '파란색'은 스크린의 감시와 디지털 소외로 우리의 정신을 교란한다. 나아가 미래의 '사유화된 색'은 자본이 시각적 권리마저 독점하는 계급화된 통제를 예고한다. 아름다움 뒤에 은폐된 이 진실을 통해, 우리는 색이 권력에 의해 철저히 설계된 구조물임을 고발한다.",
+                3: "Golden Indexed, 김채린 <br><br> ‘기호를 활용해 외계인과 소통할 수 있을까?’ 인간의 읽기와 쓰기 체계 중 하나인 기호가 과연 상호작용이 가능한지를 실험해보는 도구 형태의 웹사이트이다. <br> 도구적 형태로 간접 소통해봄으로써 어쩌면 외계인과 소통은 불가능할지도 모르는 전제 하에 인간의 상상력의 한계를 넘어 상상해보고, 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
             };
             const footerOverrides = {
                 1: "Present", 
@@ -393,7 +379,7 @@
             });
         }
 
-        // 7. 물방울 물리 효과 (bg20 포함)
+        // 7. 물방울 물리 효과
         function initBubbles() {
             const bubbleIds = ['bg13', 'bg15', 'bg16', 'bg17', 'bg18', 'bg19', 'bg20'];
             const bubbles = [];
@@ -472,11 +458,8 @@
         window.onload = function() {
             resetTimer(); 
             setupHoverEffects(); 
-            
-            // 타이핑 관련 (자동 시작 + 상호작용 연결)
-            startTypingLoop(); 
+            startTypingLoop();     
             setupTypingInteractions(); 
-
             startGlitchEffect(); 
             setupBackgroundScroll(); 
             startFooterRolling();
