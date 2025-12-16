@@ -28,31 +28,66 @@
         }
 
         /* [3. 공통 스타일] */
-        .layer-img, .bg-img, .extra-img {
+        .layer-img, .bg-img, .extra-img, .bubble-img {
             position: absolute;
             object-fit: contain;
-            cursor: pointer;
             transition: transform 0.3s ease;
         }
         
         .layer-img:hover {
             transform: scale(1.05);
+            cursor: pointer;
         }
 
-        /* [A. 배경 레이어] */
-        .bg-img {
-            transform-origin: 50% 50%; 
-            will-change: transform;
-        }
-
-        #bg1, #bg2, #bg3, #bg4 {
-            width: 1920px; height: 1080px;
-            top: 0; left: 0;
-        }
-        #bg1 { z-index: 1; } 
+        /* [배경 및 오브젝트 위치] */
+        #bg1, #bg2, #bg3, #bg4 { width: 1920px; height: 1080px; top: 0; left: 0; }
+        #bg1 { z-index: 1; }
         #bg2 { z-index: 2; }
-        #bg3 { z-index: 3; } 
+        #bg3 { z-index: 3; }
         #bg4 { z-index: 4; }
+
+        .extra-img { z-index: 5; pointer-events: none; }
+
+        /* --- [오브젝트 위치 및 크기 수정됨 (2배 확대)] --- */
+        #bg5 { width: 150px; top: 50%; left: 1750px; transform: translateY(-50%); }
+        #bg6 { width: 120px; top: calc(50% + 60px); left: 1760px; }
+        #bg8 { width: 200px; top: 40%; left: 1500px; }
+        
+        /* bg14: 200px -> 400px */
+        #bg14 { width: 400px; top: 150px; left: 150px; }
+        
+        /* bg11: 100px -> 200px */
+        #bg11 { width: 200px; top: 80px; left: 80px; }
+        
+        #bg12 { width: 100px; top: 850px; left: 150px; }
+        
+        /* bg10: 100px -> 200px */
+        #bg10 { width: 200px; top: 900px; left: 800px; }
+        
+        #bg7 { width: 180px; top: 850px; left: 550px; }
+        
+        /* bg9: 140px -> 280px */
+        #bg9 { width: 280px; top: 50px; left: 900px; }
+
+        /* [복제된 미니 오브젝트들] */
+        .mini-bg10 { width: 50px; top: 75%; }
+        .mini-bg9 { width: 100px; top: calc(75% + 35px); }
+
+
+        /* [물방울 오브젝트] */
+        .bubble-img { 
+            z-index: 6; 
+            pointer-events: auto; 
+            cursor: pointer; 
+            will-change: transform; 
+        }
+        #bg13 { width: 60px; }
+        #bg15 { width: 70px; }
+        #bg16 { width: 50px; }
+        #bg17 { width: 80px; }
+        #bg18 { width: 55px; }
+        #bg19 { width: 65px; }
+
 
         /* 젤리 글리치 애니메이션 */
         @keyframes elastic-jelly {
@@ -62,46 +97,28 @@
             75% { transform: translateX(-15px) skewX(-0.5deg) scale(1, 1); }
             100% { transform: translateX(0) skewX(0) scale(1, 1); }
         }
-
         .glitch-active {
             animation: elastic-jelly 0.8s cubic-bezier(0.25, 1.2, 0.5, 1) both;
             transition: none !important; 
         }
 
-        #bg1.glitch-active { animation-duration: 0.75s; }
-        #bg2.glitch-active { animation-duration: 0.8s; }
-        #bg3.glitch-active { animation-duration: 0.85s; }
-        #bg4.glitch-active { animation-duration: 0.78s; }
-
-
-        /* [B. 추가 오브젝트] */
-        .extra-img { z-index: 5; }
-        #bg5 { width: 150px; top: 100px; left: 100px; }
-        #bg6 { width: 120px; top: 200px; left: 300px; }
-        #bg7 { width: 180px; top: 150px; left: 1500px; }
-        #bg8 { width: 100px; top: 800px; left: 200px; }
-        #bg9 { width: 140px; top: 50px; left: 900px; }
-        #bg10 { width: 100px; top: 900px; left: 1600px; }
-        #bg11 { width: 100px; top: 10px; left: 10px; }
-        #bg12 { width: 100px; top: 10px; left: 120px; }
-        #bg13 { width: 100px; top: 10px; left: 230px; }
-        #bg14 { width: 100px; top: 10px; left: 340px; }
-        #bg15 { width: 100px; top: 10px; left: 450px; }
-
-
-        /* [C. 좌측 메인 텍스트 (Human Protocol)] */
+        /* [좌측 정보 텍스트] */
         #text-pos-container {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            z-index: 20; 
+            left: 70px; 
+            z-index: 9000; 
             pointer-events: none;
             text-align: left;
-            left: 70px; 
-            
-            /* [수정 1] 텍스트가 잘리지 않도록 너비 증가 및 단어 끊김 방지 */
             max-width: 1000px; 
-            word-break: keep-all; /* 단어 단위로 줄바꿈 (뚝뚝 끊김 방지) */
+            word-break: keep-all;
+            
+            opacity: 0; /* 기본 숨김 */
+            transition: opacity 0.3s ease; 
+        }
+        #text-pos-container.visible {
+            opacity: 1;
         }
         
         .jagged-bg {
@@ -112,6 +129,7 @@
             display: inline;
             -webkit-box-decoration-break: clone; box-decoration-break: clone;
             white-space: pre-wrap; 
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
         }
         .cursor::after {
             content: '|'; display: inline-block; margin-left: 2px; color: black;
@@ -120,7 +138,7 @@
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
 
-        /* [D. Hannah & 시계] */
+        /* [중앙 인물 Hannah] */
         .center-wrapper {
             position: absolute;
             width: 800px; height: 800px;
@@ -131,37 +149,16 @@
         }
         .center-wrapper img { pointer-events: auto; }
 
-        #layer1 { 
-            width: 350px; top: 50%; left: 50%; 
-            transform: translate(-50%, -50%); 
-            z-index: 10; 
-        }
-        #layer1:hover { 
-            transform: translate(-50%, -50%) scale(1.05); 
-            z-index: 11; 
-        }
+        #layer1 { width: 350px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; }
+        #layer1:hover { z-index: 11; }
 
-        #layer2 { 
-            width: 350px; top: 415px; left: 225px; 
-            z-index: 20; 
-        }
+        #layer2 { width: 350px; top: 415px; left: 225px; z-index: 20; }
         #layer2:hover { z-index: 21; }
 
-        #layer3 { 
-            width: 95px; top: 270px; left: 400px; 
-            z-index: 30; 
-        }
+        #layer3 { width: 95px; top: 270px; left: 400px; z-index: 30; }
         #layer3:hover { z-index: 31; }
         
-        #clock-pos-container {
-            position: absolute; top: 75%; left: 50%; 
-            transform: translate(-50%, -50%); 
-            z-index: 50; 
-            pointer-events: none; text-align: center;
-        }
-
-
-        /* [E. 화면 보호기] */
+        /* [화면 보호기] */
         #layer4 {
             position: absolute; width: 350px; top: 50%; left: 50%;
             transform: translate(-50%, -50%); object-fit: contain; 
@@ -171,37 +168,58 @@
         #layer4.active { opacity: 1; }
 
 
-        /* [F. NEW - 호버 설명 텍스트 (화면 우측 배치)] */
+        /* [호버 설명 텍스트] */
         #hover-description {
             position: absolute;
-            top: 50%;
-            left: 62%; /* 중앙에서 약간 오른쪽 */
+            top: 50%; left: 62%;
             transform: translateY(-50%);
-            width: 450px; /* 적절한 너비 */
-            z-index: 200; /* 이미지들보다 위에 표시 */
-            
-            background-color: rgba(255, 255, 255, 0.9); /* 가독성을 위한 반투명 배경 */
-            padding: 20px;
-            border: 2px solid #000;
-            
-            font-family: 'Wanted Sans Variable', sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 1.6;
-            word-break: keep-all; /* 한국어 단어 끊김 방지 */
-            
-            opacity: 0; /* 평소엔 숨김 */
-            pointer-events: none; /* 마우스 이벤트 통과 */
+            width: 450px; 
+            z-index: 9500; 
+            pointer-events: none; 
+            opacity: 0; 
             transition: opacity 0.3s ease;
         }
-        /* 텍스트가 있을 때만 보이도록 클래스로 제어 */
-        #hover-description.visible {
-            opacity: 1;
+        #hover-description.visible { opacity: 1; }
+
+
+        /* [푸터 자막] */
+        #footer-text-container {
+            position: absolute;
+            top: 75%; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999; 
+            text-align: center;
+            width: 100%;
+            pointer-events: none;
+        }
+        
+        #footer-text {
+            background-color: #ffffff; 
+            color: #000000;
+            font-weight: 700; 
+            font-size: 20px;
+            padding: 5px 15px;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0; 
+        }
+        #footer-text.show { opacity: 1; }
+
+        /* [사운드클라우드 iframe (숨김)] */
+        #soundcloud-frame {
+            position: absolute; width: 1px; height: 1px;
+            opacity: 0; pointer-events: none; z-index: -1;
         }
 
     </style>
 </head>
 <body>
+    
+    <iframe id="soundcloud-frame" 
+            allow="autoplay" 
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/472694976&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
+    </iframe>
 
     <div class="image-container">
         <img src="bg1.png" id="bg1" class="bg-img" alt="Background 1">
@@ -217,9 +235,22 @@
         <img src="bg10.png" id="bg10" class="extra-img" alt="Object 10">
         <img src="bg11.png" id="bg11" class="extra-img" alt="Object 11">
         <img src="bg12.png" id="bg12" class="extra-img" alt="Object 12">
-        <img src="bg13.png" id="bg13" class="extra-img" alt="Object 13">
         <img src="bg14.png" id="bg14" class="extra-img" alt="Object 14">
-        <img src="bg15.png" id="bg15" class="extra-img" alt="Object 15">
+        
+        <img src="bg10.png" class="extra-img mini-bg10" style="left: 100px;" alt="Object 10 mini">
+        <img src="bg10.png" class="extra-img mini-bg10" style="left: 160px;" alt="Object 10 mini">
+        <img src="bg10.png" class="extra-img mini-bg10" style="left: 220px;" alt="Object 10 mini">
+
+        <img src="bg9.png" class="extra-img mini-bg9" style="left: 120px;" alt="Object 9 mini">
+        <img src="bg9.png" class="extra-img mini-bg9" style="left: 180px;" alt="Object 9 mini">
+        <img src="bg9.png" class="extra-img mini-bg9" style="left: 240px;" alt="Object 9 mini">
+
+        <img src="bg13.png" id="bg13" class="bubble-img" alt="Bubble 13" onerror="this.style.display='none'">
+        <img src="bg15.png" id="bg15" class="bubble-img" alt="Bubble 15" onerror="this.style.display='none'">
+        <img src="bg16.png" id="bg16" class="bubble-img" alt="Bubble 16" onerror="this.style.display='none'">
+        <img src="bg17.png" id="bg17" class="bubble-img" alt="Bubble 17" onerror="this.style.display='none'">
+        <img src="bg18.png" id="bg18" class="bubble-img" alt="Bubble 18" onerror="this.style.display='none'">
+        <img src="bg19.png" id="bg19" class="bubble-img" alt="Bubble 19" onerror="this.style.display='none'">
 
         <div id="text-pos-container">
             <span id="typing-target" class="jagged-bg cursor"></span>
@@ -232,11 +263,11 @@
             <img src="hannah2.png" id="layer2" class="layer-img" onclick="goToLink(2)" alt="Hannah 2">
             <img src="hannah3.png" id="layer3" class="layer-img" onclick="goToLink(3)" alt="Hannah 3">
             
-            <div id="clock-pos-container">
-                <span id="clock-text" class="jagged-bg">00:00:00</span>
-            </div>
-
             <img src="hannah4.png" id="layer4" alt="Screensaver">
+        </div>
+
+        <div id="footer-text-container">
+            <span id="footer-text"></span>
         </div>
 
     </div>
@@ -256,79 +287,60 @@
         const screensaverLayer = document.getElementById('layer4');
         const idleLimit = 1 * 60 * 1000; 
 
-        function showScreensaver() { screensaverLayer.classList.add('active'); }
+        function showScreensaver() { if(screensaverLayer) screensaverLayer.classList.add('active'); }
         function resetTimer() {
-            screensaverLayer.classList.remove('active');
+            if(screensaverLayer) screensaverLayer.classList.remove('active');
             clearTimeout(idleTimer);
             idleTimer = setTimeout(showScreensaver, idleLimit);
         }
 
-        // 3. 시계 & 호버 텍스트 기능 통합
-        let timeOffset = 0; 
+        // [전역 변수] 푸터 텍스트 제어 플래그
+        let isFooterOverride = false;
 
-        function startClock() {
-            const clockText = document.getElementById('clock-text');
-            function updateTime() {
-                const now = new Date();
-                const targetTime = new Date(now.getTime() + (timeOffset * 60 * 60 * 1000));
-                const kstTime = targetTime.toLocaleTimeString('en-GB', { timeZone: 'Asia/Seoul', hour12: false });
-                clockText.innerText = kstTime; 
-            }
-            updateTime(); setInterval(updateTime, 1000); 
-        }
-
+        // 3. 호버 효과 (Hannah 인물들)
         function setupHoverEffects() {
             const layer1 = document.getElementById('layer1');
             const layer2 = document.getElementById('layer2');
             const layer3 = document.getElementById('layer3');
-            const clockText = document.getElementById('clock-text');
-            
-            // 설명 텍스트 박스
             const descBox = document.getElementById('hover-description');
+            const footerText = document.getElementById('footer-text'); 
 
-            // 요청하신 텍스트 내용
             const texts = {
-                1: "디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠, 그리고 누군가의 얼굴을 긁어낸 날카로운 칼날까지. 권력은 눈에 거슬리는 이들을 처형하고, 남겨진 사진 위에서 한 번 더 살해했다. 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해, 껍데기 뒤에 숨겨진 삭제된 진실을 발굴한다. 기록에서 지워진다는 것은 곧 존재의 소멸을 의미한다. 이것은 단순한 이미지의 수정이 아니다. 기억에 대한 사형 선고다.",
-                2: "안녕 지우~",
-                3: "‘기호를 활용해 외계인과 소통할 수 있을까?’ 인간의 읽기와 쓰기 체계 중 하나인 기호가 과연 상호작용이 가능한지를 실험해보는 도구 형태의 웹사이트이다. <br><br>도구적 형태로 간접 소통해봄으로써 어쩌면 외계인과 소통은 불가능할지도 모르는 전제 하에 인간의 상상력의 한계를 넘어 상상해보고, 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
+                1: "Untouched, 이은서 <br> <br> 디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠, 그리고 누군가의 얼굴을 긁어낸 날카로운 칼날까지. 권력은 눈에 거슬리는 이들을 처형하고, 남겨진 사진 위에서 한 번 더 살해했다. <br> 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해, 껍데기 뒤에 숨겨진 삭제된 진실을 발굴한다. 기록에서 지워진다는 것은 곧 존재의 소멸을 의미한다. 이것은 단순한 이미지의 수정이 아니다. 기억에 대한 사형 선고다.",
+                2: "CONTROLLED SPECTRUM : 통제된 스펙트럼, 박지우 <br><br> 본 프로젝트는 '색은 아름답다'는 인류의 오랜 낭만적 통념을 해체하고, 색을 생존과 직결된 '통제와 억압의 도구'로 재정의한다. 우리는 시대를 관통하며 가해진 색의 통제 방식을 추적한다. 19세기의 '초록'은 맹독성 비소로 인간의 육체를 물리적으로 파괴했고, 현대의 '파란색'은 스크린의 감시와 디지털 소외로 우리의 정신을 교란한다. 나아가 미래의 '사유화된 색'은 자본이 시각적 권리마저 독점하는 계급화된 통제를 예고한다. 아름다움 뒤에 은폐된 이 진실을 통해, 우리는 색이 권력에 의해 철저히 설계된 구조물임을 고발한다.",
+                3: "Golden Indexed, 김채린 <br><br> ‘기호를 활용해 외계인과 소통할 수 있을까?’ 인간의 읽기와 쓰기 체계 중 하나인 기호가 과연 상호작용이 가능한지를 실험해보는 도구 형태의 웹사이트이다. <br> 도구적 형태로 간접 소통해봄으로써 어쩌면 외계인과 소통은 불가능할지도 모르는 전제 하에 인간의 상상력의 한계를 넘어 상상해보고, 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
             };
 
-            function getKstString(offset) {
-                const now = new Date();
-                const target = new Date(now.getTime() + (offset * 3600 * 1000));
-                return target.toLocaleTimeString('en-GB', { timeZone: 'Asia/Seoul', hour12: false });
-            }
+            const footerOverrides = { 1: "Present", 2: "Past", 3: "Future" };
 
-            // [호버 이벤트 함수]
-            function onHover(layerId, offset) {
-                // 1. 시계 변경
-                timeOffset = offset;
-                clockText.innerText = getKstString(offset);
-
-                // 2. 설명 텍스트 표시
+            function onHover(layerId) {
                 if(texts[layerId]) {
-                    descBox.innerHTML = texts[layerId]; // HTML 태그(<br>) 인식을 위해 innerHTML 사용
+                    descBox.innerHTML = `<span class="jagged-bg">${texts[layerId]}</span>`;
                     descBox.classList.add('visible');
+                }
+                if(footerOverrides[layerId]) {
+                    isFooterOverride = true; 
+                    footerText.textContent = footerOverrides[layerId];
+                    footerText.style.transition = 'none'; 
+                    footerText.style.opacity = '1';       
+                    footerText.classList.add('show');
                 }
             }
 
             function onLeave() {
-                // 마우스 나가면 설명 텍스트 숨김
                 descBox.classList.remove('visible');
+                isFooterOverride = false; 
+                footerText.style.transition = ''; 
+                footerText.style.opacity = ''; 
+                footerText.classList.remove('show'); 
             }
 
-            // 이벤트 리스너 등록
-            layer1.addEventListener('mouseenter', () => onHover(1, 0));
-            layer1.addEventListener('mouseleave', onLeave);
-
-            layer2.addEventListener('mouseenter', () => onHover(2, -20));
-            layer2.addEventListener('mouseleave', onLeave);
-
-            layer3.addEventListener('mouseenter', () => onHover(3, 12));
-            layer3.addEventListener('mouseleave', onLeave);
+            if(layer1) { layer1.addEventListener('mouseenter', () => onHover(1)); layer1.addEventListener('mouseleave', onLeave); }
+            if(layer2) { layer2.addEventListener('mouseenter', () => onHover(2)); layer2.addEventListener('mouseleave', onLeave); }
+            if(layer3) { layer3.addEventListener('mouseenter', () => onHover(3)); layer3.addEventListener('mouseleave', onLeave); }
         }
 
-        // 4. 타이핑 효과
+        // 4. 정보 텍스트 타이핑 효과 제어
         const typingText = `Human Protocol
 왜곡의 최대 경계선까지 나아가보자.
 왜곡을 해체하고, 진실도 해체한다.
@@ -338,19 +350,36 @@
 간단명료하지만 미묘하게.
 마치 교묘하게 비켜 가듯이.`;
 
+        const typingContainer = document.getElementById('text-pos-container');
         const typingTarget = document.getElementById('typing-target');
         let typeIndex = 0;
-        const typingSpeed = 50; 
+        let typeHandle; 
 
-        function startTyping() {
-            if (typeIndex < typingText.length) {
+        // 타이핑 한 글자씩 쓰는 재귀 함수
+        function runTypeWriter() {
+            if (typingTarget && typeIndex < typingText.length) {
                 typingTarget.textContent += typingText.charAt(typeIndex);
                 typeIndex++;
-                setTimeout(startTyping, typingSpeed);
+                typeHandle = setTimeout(runTypeWriter, 50);
             }
         }
 
-        // 5. 배경 젤리 모션
+        // 타이핑 시작
+        function showTypingEffect() {
+            clearTimeout(typeHandle);
+            typeIndex = 0;
+            typingTarget.textContent = "";
+            typingContainer.classList.add('visible');
+            runTypeWriter();
+        }
+
+        // 타이핑 종료
+        function hideTypingEffect() {
+            clearTimeout(typeHandle);
+            typingContainer.classList.remove('visible');
+        }
+
+        // 5. 배경 젤리 글리치 & 스크롤
         function startGlitchEffect() {
             const bgs = document.querySelectorAll('.bg-img'); 
             setInterval(() => {
@@ -362,52 +391,166 @@
                 });
             }, 3000); 
         }
-
-        // 6. 배경 드래그 모션
-        function setupBackgroundDrag() {
+        function setupBackgroundScroll() {
             const bgs = document.querySelectorAll('.bg-img'); 
-            let isDragging = false;
-            let startX = 0;
-
-            document.addEventListener('mousedown', (e) => {
-                if (e.button !== 0) return;
-                isDragging = true;
-                startX = e.clientX;
-                bgs.forEach(bg => bg.style.transition = 'none');
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                const currentX = e.clientX;
-                const moveX = (currentX - startX) * 0.6; 
+            let currentX = 0;
+            let isScrolling;
+            window.addEventListener('wheel', (e) => {
+                const moveAmount = e.deltaY * -0.8; 
+                currentX += moveAmount;
+                if (currentX > 300) currentX = 300;
+                if (currentX < -300) currentX = -300;
                 bgs.forEach(bg => {
-                    bg.style.transform = `translateX(${moveX}px)`;
+                    if (!bg.classList.contains('glitch-active')) {
+                        const id = bg.id;
+                        if (id === 'bg1' || id === 'bg3') bg.style.transform = `translateX(${currentX}px)`;
+                        else if (id === 'bg2' || id === 'bg4') bg.style.transform = `translateX(${-currentX}px)`;
+                    }
                 });
+                clearTimeout(isScrolling);
+                isScrolling = setTimeout(() => {
+                    currentX = 0;
+                    bgs.forEach(bg => {
+                        if (!bg.classList.contains('glitch-active')) {
+                            bg.style.transition = 'transform 0.6s cubic-bezier(0.25, 1.2, 0.5, 1)'; 
+                            bg.style.transform = 'translateX(0)';
+                        }
+                    });
+                }, 60); 
             });
-
-            const stopDragging = () => {
-                if (!isDragging) return;
-                isDragging = false;
-                bgs.forEach(bg => {
-                    bg.style.transition = 'transform 0.5s ease-out';
-                    bg.style.transform = 'translateX(0)';
-                });
-            };
-
-            document.addEventListener('mouseup', stopDragging);
-            document.addEventListener('mouseleave', stopDragging);
         }
 
+        // 6. 물방울 물리 효과 및 이벤트
+        function initBubbles() {
+            const bubbleIds = ['bg13', 'bg15', 'bg16', 'bg17', 'bg18', 'bg19'];
+            const bubbles = [];
+            
+            bubbleIds.forEach(id => {
+                const el = document.getElementById(id);
+                if(el && el.style.display !== 'none') {
+                    
+                    // [이벤트] 좌측 타이핑 텍스트 제어
+                    const toggleText = (e) => {
+                        e.stopPropagation(); 
+                        if (typingContainer.classList.contains('visible')) hideTypingEffect();
+                        else showTypingEffect();
+                    };
+
+                    el.addEventListener('mouseenter', showTypingEffect);
+                    el.addEventListener('mouseleave', hideTypingEffect);
+                    el.addEventListener('click', toggleText);
+
+                    // 물리 엔진 데이터
+                    const x = Math.random() * (1920 - 100);
+                    const y = Math.random() * (1080 - 100);
+                    const vx = (Math.random() - 0.5) * 4; 
+                    const vy = (Math.random() - 0.5) * 4;
+                    
+                    bubbles.push({
+                        el: el,
+                        x: x, y: y,
+                        vx: vx, vy: vy,
+                        width: el.clientWidth || 50, 
+                        height: el.clientHeight || 50
+                    });
+                }
+            });
+
+            function update() {
+                bubbles.forEach((b1, index) => {
+                    b1.x += b1.vx;
+                    b1.y += b1.vy;
+
+                    if (b1.x <= 0 || b1.x + b1.width >= 1920) {
+                        b1.vx *= -1;
+                        b1.x = Math.max(0, Math.min(b1.x, 1920 - b1.width)); 
+                    }
+                    if (b1.y <= 0 || b1.y + b1.height >= 1080) {
+                        b1.vy *= -1;
+                        b1.y = Math.max(0, Math.min(b1.y, 1080 - b1.height));
+                    }
+
+                    for (let j = index + 1; j < bubbles.length; j++) {
+                        const b2 = bubbles[j];
+                        const dx = (b1.x + b1.width/2) - (b2.x + b2.width/2);
+                        const dy = (b1.y + b1.height/2) - (b2.y + b2.height/2);
+                        const distance = Math.sqrt(dx*dx + dy*dy);
+                        const minDistance = (b1.width/2 + b2.width/2) * 0.8; 
+
+                        if (distance < minDistance) {
+                            const tempVx = b1.vx; const tempVy = b1.vy;
+                            b1.vx = b2.vx; b1.vy = b2.vy;
+                            b2.vx = tempVx; b2.vy = tempVy;
+                            
+                            const angle = Math.atan2(dy, dx);
+                            const overlap = minDistance - distance;
+                            b1.x += Math.cos(angle) * overlap / 2;
+                            b1.y += Math.sin(angle) * overlap / 2;
+                            b2.x -= Math.cos(angle) * overlap / 2;
+                            b2.y -= Math.sin(angle) * overlap / 2;
+                        }
+                    }
+
+                    b1.el.style.left = b1.x + 'px';
+                    b1.el.style.top = b1.y + 'px';
+                });
+                requestAnimationFrame(update);
+            }
+
+            setTimeout(() => {
+                bubbles.forEach(b => {
+                   if(b.el.offsetWidth > 0) {
+                       b.width = b.el.offsetWidth;
+                       b.height = b.el.offsetHeight;
+                   }
+                });
+                update();
+            }, 500);
+        }
+
+        // 7. 하단 푸터 텍스트 롤링
+        function startFooterRolling() {
+            const footerEl = document.getElementById('footer-text');
+            const messages = [
+                'Hello, World.',
+                'This is Hannah.',
+                'Welcome to Human Protocol.',
+                'What time zone are you from?',
+                'Or what era are you from?',
+                'I come from all time and eras.',
+                'Would you like to join with me?'
+            ];
+            let index = 0;
+
+            function showMessage() {
+                if (isFooterOverride) return;
+                footerEl.textContent = messages[index];
+                footerEl.classList.add('show');
+                setTimeout(() => {
+                    if (!isFooterOverride) {
+                        footerEl.classList.remove('show');
+                    }
+                }, 4000);
+                index = (index + 1) % messages.length;
+            }
+
+            showMessage(); 
+            setInterval(showMessage, 5000); 
+        }
+
+        // [초기화 실행]
         window.onload = function() {
             resetTimer(); 
-            startClock(); 
             setupHoverEffects(); 
-            startTyping();
             startGlitchEffect(); 
-            setupBackgroundDrag(); 
+            setupBackgroundScroll(); 
+            startFooterRolling();
+            initBubbles(); 
         };
+
         document.onmousemove = resetTimer; document.onkeypress = resetTimer;
         document.ontouchstart = resetTimer; document.onclick = resetTimer;
+
     </script>
 </body>
 </html>
