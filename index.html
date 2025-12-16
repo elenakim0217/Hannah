@@ -39,7 +39,7 @@
             cursor: pointer;
         }
 
-        /* [배경 및 오브젝트 위치] */
+        /* [배경 및 오브젝트 위치 수정 영역] */
         #bg1, #bg2, #bg3, #bg4 { width: 1920px; height: 1080px; top: 0; left: 0; }
         #bg1 { z-index: 1; }
         #bg2 { z-index: 2; }
@@ -47,47 +47,30 @@
         #bg4 { z-index: 4; }
 
         .extra-img { z-index: 5; pointer-events: none; }
-
-        /* --- [오브젝트 위치 및 크기 수정됨 (2배 확대)] --- */
-        #bg5 { width: 150px; top: 50%; left: 1750px; transform: translateY(-50%); }
-        #bg6 { width: 120px; top: calc(50% + 60px); left: 1760px; }
-        #bg8 { width: 200px; top: 40%; left: 1500px; }
+        /* click 이벤트를 받기 위해 pointer-events를 auto로 변경할 수도 있지만, 
+           여기서는 JS에서 대상을 잡기 위해 클래스 구조만 유지합니다. 
+           (아래 JS에서 상호작용을 위해 필요한 요소는 pointer-events: auto 처리가 필요할 수 있음) 
+           하지만 배경 요소라 클릭 통과가 자연스러우므로 hover 감지만 주로 동작합니다. */
         
-        /* bg14: 200px -> 400px */
-        #bg14 { width: 400px; top: 150px; left: 150px; }
+        #bg5 { width: 150px; top: 100px; left: 100px; }
+        #bg6 { width: 120px; top: 200px; left: 300px; }
+        #bg7 { width: 180px; top: 150px; left: 1500px; }
+        #bg8 { width: 100px; top: 800px; left: 200px; }
+        #bg9 { width: 140px; top: 50px; left: 900px; }
+        #bg10 { width: 100px; top: 900px; left: 1600px; }
+        #bg11 { width: 100px; top: 10px; left: 10px; }
+        #bg12 { width: 100px; top: 10px; left: 120px; }
+        #bg14 { width: 100px; top: 10px; left: 340px; }
         
-        /* bg11: 100px -> 200px */
-        #bg11 { width: 200px; top: 80px; left: 80px; }
-        
-        #bg12 { width: 100px; top: 850px; left: 150px; }
-        
-        /* bg10: 100px -> 200px */
-        #bg10 { width: 200px; top: 900px; left: 800px; }
-        
-        #bg7 { width: 180px; top: 850px; left: 550px; }
-        
-        /* bg9: 140px -> 280px */
-        #bg9 { width: 280px; top: 50px; left: 900px; }
-
-        /* [복제된 미니 오브젝트들] */
-        .mini-bg10 { width: 50px; top: 75%; }
-        .mini-bg9 { width: 100px; top: calc(75% + 35px); }
-
-
         /* [물방울 오브젝트] */
-        .bubble-img { 
-            z-index: 6; 
-            pointer-events: auto; 
-            cursor: pointer; 
-            will-change: transform; 
-        }
+        .bubble-img { z-index: 6; pointer-events: auto; /* 상호작용을 위해 auto */ will-change: transform; }
         #bg13 { width: 60px; }
         #bg15 { width: 70px; }
         #bg16 { width: 50px; }
         #bg17 { width: 80px; }
         #bg18 { width: 55px; }
         #bg19 { width: 65px; }
-
+        #bg20 { width: 60px; }
 
         /* 젤리 글리치 애니메이션 */
         @keyframes elastic-jelly {
@@ -105,22 +88,11 @@
         /* [좌측 정보 텍스트] */
         #text-pos-container {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            left: 70px; 
-            z-index: 9000; 
-            pointer-events: none;
-            text-align: left;
-            max-width: 1000px; 
-            word-break: keep-all;
-            
-            opacity: 0; /* 기본 숨김 */
-            transition: opacity 0.3s ease; 
+            top: 50%; transform: translateY(-50%);
+            left: 70px; z-index: 9000;
+            pointer-events: none; text-align: left;
+            max-width: 1000px; word-break: keep-all;
         }
-        #text-pos-container.visible {
-            opacity: 1;
-        }
-        
         .jagged-bg {
             background-color: #ffffff; color: #000000;            
             line-height: 1.6; padding: 5px 10px; 
@@ -137,24 +109,20 @@
         }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-
         /* [중앙 인물 Hannah] */
         .center-wrapper {
             position: absolute;
             width: 800px; height: 800px;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 100; 
-            pointer-events: none; 
+            z-index: 100; pointer-events: none; 
         }
         .center-wrapper img { pointer-events: auto; }
 
         #layer1 { width: 350px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; }
         #layer1:hover { z-index: 11; }
-
         #layer2 { width: 350px; top: 415px; left: 225px; z-index: 20; }
         #layer2:hover { z-index: 21; }
-
         #layer3 { width: 95px; top: 270px; left: 400px; z-index: 30; }
         #layer3:hover { z-index: 31; }
         
@@ -162,88 +130,66 @@
         #layer4 {
             position: absolute; width: 350px; top: 50%; left: 50%;
             transform: translate(-50%, -50%); object-fit: contain; 
-            z-index: 999; 
-            opacity: 0; pointer-events: none; transition: opacity 2s ease-in-out;
+            z-index: 999; opacity: 0; pointer-events: none; transition: opacity 2s ease-in-out;
         }
         #layer4.active { opacity: 1; }
-
 
         /* [호버 설명 텍스트] */
         #hover-description {
             position: absolute;
-            top: 50%; left: 62%;
-            transform: translateY(-50%);
-            width: 450px; 
-            z-index: 9500; 
-            pointer-events: none; 
-            opacity: 0; 
-            transition: opacity 0.3s ease;
+            top: 50%; left: 62%; transform: translateY(-50%);
+            width: 450px; z-index: 9500; pointer-events: none; 
+            opacity: 0; transition: opacity 0.3s ease;
         }
         #hover-description.visible { opacity: 1; }
 
-
         /* [푸터 자막] */
         #footer-text-container {
-            position: absolute;
-            top: 75%; 
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999; 
-            text-align: center;
-            width: 100%;
-            pointer-events: none;
+            position: absolute; top: 75%; left: 50%;
+            transform: translateX(-50%); z-index: 9999;
+            text-align: center; width: 100%; 
+            pointer-events: auto; /* 상호작용(호버/클릭)을 위해 auto 설정 */
         }
-        
         #footer-text {
-            background-color: #ffffff; 
-            color: #000000;
-            font-weight: 700; 
-            font-size: 20px;
+            background-color: #ffffff; color: #000000;
+            font-weight: 700; font-size: 20px;
             padding: 5px 15px;
             box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-            transition: opacity 0.5s ease-in-out;
-            opacity: 0; 
+            transition: opacity 0.5s ease-in-out; opacity: 0; 
+            cursor: pointer; /* 클릭 가능 표시 */
         }
         #footer-text.show { opacity: 1; }
 
-        /* [사운드클라우드 iframe (숨김)] */
-        #soundcloud-frame {
-            position: absolute; width: 1px; height: 1px;
-            opacity: 0; pointer-events: none; z-index: -1;
+        /* [음악용 iframe (숨김)] */
+        #bg-music-frame {
+            position: absolute; width: 0; height: 0;
+            border: 0; visibility: hidden;
         }
-
     </style>
 </head>
 <body>
     
-    <iframe id="soundcloud-frame" 
-            allow="autoplay" 
-            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/472694976&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
+    <iframe id="bg-music-frame" 
+            src="https://www.youtube.com/embed/fbR0t7CZ8X4?enablejsapi=1&autoplay=1&loop=1&playlist=fbR0t7CZ8X4&controls=0&showinfo=0&rel=0&mute=0" 
+            allow="autoplay; encrypted-media"
+            title="bgm">
     </iframe>
 
     <div class="image-container">
-        <img src="bg1.png" id="bg1" class="bg-img" alt="Background 1">
-        <img src="bg2.png" id="bg2" class="bg-img" alt="Background 2">
-        <img src="bg3.png" id="bg3" class="bg-img" alt="Background 3">
-        <img src="bg4.png" id="bg4" class="bg-img" alt="Background 4">
+        <img src="bg1.png" id="bg1" class="bg-img" alt="Background 1" style="pointer-events: auto;">
+        <img src="bg2.png" id="bg2" class="bg-img" alt="Background 2" style="pointer-events: auto;">
+        <img src="bg3.png" id="bg3" class="bg-img" alt="Background 3" style="pointer-events: auto;">
+        <img src="bg4.png" id="bg4" class="bg-img" alt="Background 4" style="pointer-events: auto;">
 
-        <img src="bg5.png" id="bg5" class="extra-img" alt="Object 5">
-        <img src="bg6.png" id="bg6" class="extra-img" alt="Object 6">
-        <img src="bg7.png" id="bg7" class="extra-img" alt="Object 7">
-        <img src="bg8.png" id="bg8" class="extra-img" alt="Object 8">
-        <img src="bg9.png" id="bg9" class="extra-img" alt="Object 9">
-        <img src="bg10.png" id="bg10" class="extra-img" alt="Object 10">
-        <img src="bg11.png" id="bg11" class="extra-img" alt="Object 11">
-        <img src="bg12.png" id="bg12" class="extra-img" alt="Object 12">
-        <img src="bg14.png" id="bg14" class="extra-img" alt="Object 14">
-        
-        <img src="bg10.png" class="extra-img mini-bg10" style="left: 100px;" alt="Object 10 mini">
-        <img src="bg10.png" class="extra-img mini-bg10" style="left: 160px;" alt="Object 10 mini">
-        <img src="bg10.png" class="extra-img mini-bg10" style="left: 220px;" alt="Object 10 mini">
-
-        <img src="bg9.png" class="extra-img mini-bg9" style="left: 120px;" alt="Object 9 mini">
-        <img src="bg9.png" class="extra-img mini-bg9" style="left: 180px;" alt="Object 9 mini">
-        <img src="bg9.png" class="extra-img mini-bg9" style="left: 240px;" alt="Object 9 mini">
+        <img src="bg5.png" id="bg5" class="extra-img" alt="Object 5" style="pointer-events: auto;">
+        <img src="bg6.png" id="bg6" class="extra-img" alt="Object 6" style="pointer-events: auto;">
+        <img src="bg7.png" id="bg7" class="extra-img" alt="Object 7" style="pointer-events: auto;">
+        <img src="bg8.png" id="bg8" class="extra-img" alt="Object 8" style="pointer-events: auto;">
+        <img src="bg9.png" id="bg9" class="extra-img" alt="Object 9" style="pointer-events: auto;">
+        <img src="bg10.png" id="bg10" class="extra-img" alt="Object 10" style="pointer-events: auto;">
+        <img src="bg11.png" id="bg11" class="extra-img" alt="Object 11" style="pointer-events: auto;">
+        <img src="bg12.png" id="bg12" class="extra-img" alt="Object 12" style="pointer-events: auto;">
+        <img src="bg14.png" id="bg14" class="extra-img" alt="Object 14" style="pointer-events: auto;">
 
         <img src="bg13.png" id="bg13" class="bubble-img" alt="Bubble 13" onerror="this.style.display='none'">
         <img src="bg15.png" id="bg15" class="bubble-img" alt="Bubble 15" onerror="this.style.display='none'">
@@ -251,6 +197,7 @@
         <img src="bg17.png" id="bg17" class="bubble-img" alt="Bubble 17" onerror="this.style.display='none'">
         <img src="bg18.png" id="bg18" class="bubble-img" alt="Bubble 18" onerror="this.style.display='none'">
         <img src="bg19.png" id="bg19" class="bubble-img" alt="Bubble 19" onerror="this.style.display='none'">
+        <img src="bg20.png" id="bg20" class="bubble-img" alt="Bubble 20" onerror="this.style.display='none'">
 
         <div id="text-pos-container">
             <span id="typing-target" class="jagged-bg cursor"></span>
@@ -262,14 +209,12 @@
             <img src="hannah1.png" id="layer1" class="layer-img" onclick="goToLink(1)" alt="Hannah 1">
             <img src="hannah2.png" id="layer2" class="layer-img" onclick="goToLink(2)" alt="Hannah 2">
             <img src="hannah3.png" id="layer3" class="layer-img" onclick="goToLink(3)" alt="Hannah 3">
-            
             <img src="hannah4.png" id="layer4" alt="Screensaver">
         </div>
 
         <div id="footer-text-container">
             <span id="footer-text"></span>
         </div>
-
     </div>
 
     <script>
@@ -286,7 +231,6 @@
         let idleTimer;
         const screensaverLayer = document.getElementById('layer4');
         const idleLimit = 1 * 60 * 1000; 
-
         function showScreensaver() { if(screensaverLayer) screensaverLayer.classList.add('active'); }
         function resetTimer() {
             if(screensaverLayer) screensaverLayer.classList.remove('active');
@@ -294,10 +238,75 @@
             idleTimer = setTimeout(showScreensaver, idleLimit);
         }
 
-        // [전역 변수] 푸터 텍스트 제어 플래그
-        let isFooterOverride = false;
+        // 3. [배경음악 강제 재생]
+        let musicStarted = false;
+        function forcePlayMusic() {
+            if (!musicStarted) {
+                const iframe = document.getElementById('bg-music-frame');
+                const currentSrc = iframe.src;
+                iframe.src = currentSrc; 
+                musicStarted = true;
+            }
+        }
 
-        // 3. 호버 효과 (Hannah 인물들)
+        // 4. [수정됨] 정보 텍스트 타이핑 효과 + 상호작용 리셋
+        const typingText = `Human Protocol: Hannah
+왜곡의 최대 경계선까지 나아가보자.
+왜곡을 해체하고, 진실도 해체한다.
+인간은 시각 정보 처리 능력에 의해
+은폐되고, 편향된다.
+명확하지만 싱겁고, 
+간단명료하지만 미묘하게.
+마치 교묘하게 비켜 가듯이.`;
+
+        const typingTarget = document.getElementById('typing-target');
+        let typeIndex = 0;
+        let typingTimer = null;
+        let loopTimer = null;
+
+        // (1) 타이핑 실행 함수
+        function runTyping() {
+            if (typingTimer) clearTimeout(typingTimer); // 기존 타이핑 중단
+            
+            typeIndex = 0;
+            if(typingTarget) typingTarget.textContent = "";
+            
+            typeWriter();
+        }
+
+        // (2) 글자 작성
+        function typeWriter() {
+            if (typingTarget && typeIndex < typingText.length) {
+                typingTarget.textContent += typingText.charAt(typeIndex);
+                typeIndex++;
+                typingTimer = setTimeout(typeWriter, 50);
+            }
+        }
+
+        // (3) 루프 시작 및 리셋 관리
+        function startTypingLoop() {
+            runTyping(); // 즉시 실행
+
+            if (loopTimer) clearInterval(loopTimer); // 기존 루프 제거
+            loopTimer = setInterval(runTyping, 10000); // 10초마다 반복 재예약
+        }
+
+        // (4) [NEW] 배경/자막 상호작용 시 타이핑 리셋
+        function setupTypingInteractions() {
+            // 배경 이미지(bg), 오브젝트(extra), 물방울(bubble), 푸터 컨테이너 선택
+            const targets = document.querySelectorAll('.bg-img, .extra-img, .bubble-img, #footer-text-container');
+            
+            targets.forEach(el => {
+                // 마우스 올리면 리셋
+                el.addEventListener('mouseenter', startTypingLoop);
+                // 클릭하면 리셋
+                el.addEventListener('click', startTypingLoop);
+            });
+        }
+
+
+        // 5. 호버 효과 & 푸터 오버라이드
+        let isFooterOverride = false;
         function setupHoverEffects() {
             const layer1 = document.getElementById('layer1');
             const layer2 = document.getElementById('layer2');
@@ -306,12 +315,15 @@
             const footerText = document.getElementById('footer-text'); 
 
             const texts = {
-                1: "Untouched, 이은서 <br> <br> 디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠, 그리고 누군가의 얼굴을 긁어낸 날카로운 칼날까지. 권력은 눈에 거슬리는 이들을 처형하고, 남겨진 사진 위에서 한 번 더 살해했다. <br> 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해, 껍데기 뒤에 숨겨진 삭제된 진실을 발굴한다. 기록에서 지워진다는 것은 곧 존재의 소멸을 의미한다. 이것은 단순한 이미지의 수정이 아니다. 기억에 대한 사형 선고다.",
-                2: "CONTROLLED SPECTRUM : 통제된 스펙트럼, 박지우 <br><br> 본 프로젝트는 '색은 아름답다'는 인류의 오랜 낭만적 통념을 해체하고, 색을 생존과 직결된 '통제와 억압의 도구'로 재정의한다. 우리는 시대를 관통하며 가해진 색의 통제 방식을 추적한다. 19세기의 '초록'은 맹독성 비소로 인간의 육체를 물리적으로 파괴했고, 현대의 '파란색'은 스크린의 감시와 디지털 소외로 우리의 정신을 교란한다. 나아가 미래의 '사유화된 색'은 자본이 시각적 권리마저 독점하는 계급화된 통제를 예고한다. 아름다움 뒤에 은폐된 이 진실을 통해, 우리는 색이 권력에 의해 철저히 설계된 구조물임을 고발한다.",
-                3: "Golden Indexed, 김채린 <br><br> ‘기호를 활용해 외계인과 소통할 수 있을까?’ 인간의 읽기와 쓰기 체계 중 하나인 기호가 과연 상호작용이 가능한지를 실험해보는 도구 형태의 웹사이트이다. <br> 도구적 형태로 간접 소통해봄으로써 어쩌면 외계인과 소통은 불가능할지도 모르는 전제 하에 인간의 상상력의 한계를 넘어 상상해보고, 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
+                1: "Untouched,이은서 <br><br> 디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠... <br> 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해 진실을 발굴한다.",
+                2: "CONTROLLED SPECTRUM : 통제된 스펙트럼, 박지우 <br><br> 색은 생존과 직결된 '통제와 억압의 도구'다. 19세기의 맹독성 초록, 현대의 파란 스크린... <br> 아름다움 뒤에 은폐된 색의 권력 구조를 고발한다.",
+                3: "Golden Indexed, 김채린 <br><br> ‘기호를 활용해 외계인과 소통할 수 있을까?’ <br> 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
             };
-
-            const footerOverrides = { 1: "Present", 2: "Past", 3: "Future" };
+            const footerOverrides = {
+                1: "Present", 
+                2: "Past",    
+                3: "Future"   
+            };
 
             function onHover(layerId) {
                 if(texts[layerId]) {
@@ -340,46 +352,7 @@
             if(layer3) { layer3.addEventListener('mouseenter', () => onHover(3)); layer3.addEventListener('mouseleave', onLeave); }
         }
 
-        // 4. 정보 텍스트 타이핑 효과 제어
-        const typingText = `Human Protocol
-왜곡의 최대 경계선까지 나아가보자.
-왜곡을 해체하고, 진실도 해체한다.
-인간은 시각 정보 처리 능력에 의해
-은폐되고, 편향된다.
-명확하지만 싱겁고, 
-간단명료하지만 미묘하게.
-마치 교묘하게 비켜 가듯이.`;
-
-        const typingContainer = document.getElementById('text-pos-container');
-        const typingTarget = document.getElementById('typing-target');
-        let typeIndex = 0;
-        let typeHandle; 
-
-        // 타이핑 한 글자씩 쓰는 재귀 함수
-        function runTypeWriter() {
-            if (typingTarget && typeIndex < typingText.length) {
-                typingTarget.textContent += typingText.charAt(typeIndex);
-                typeIndex++;
-                typeHandle = setTimeout(runTypeWriter, 50);
-            }
-        }
-
-        // 타이핑 시작
-        function showTypingEffect() {
-            clearTimeout(typeHandle);
-            typeIndex = 0;
-            typingTarget.textContent = "";
-            typingContainer.classList.add('visible');
-            runTypeWriter();
-        }
-
-        // 타이핑 종료
-        function hideTypingEffect() {
-            clearTimeout(typeHandle);
-            typingContainer.classList.remove('visible');
-        }
-
-        // 5. 배경 젤리 글리치 & 스크롤
+        // 6. 배경 글리치 & 스크롤
         function startGlitchEffect() {
             const bgs = document.querySelectorAll('.bg-img'); 
             setInterval(() => {
@@ -420,136 +393,106 @@
             });
         }
 
-        // 6. 물방울 물리 효과 및 이벤트
+        // 7. 물방울 물리 효과 (bg20 포함)
         function initBubbles() {
-            const bubbleIds = ['bg13', 'bg15', 'bg16', 'bg17', 'bg18', 'bg19'];
+            const bubbleIds = ['bg13', 'bg15', 'bg16', 'bg17', 'bg18', 'bg19', 'bg20'];
             const bubbles = [];
-            
             bubbleIds.forEach(id => {
                 const el = document.getElementById(id);
                 if(el && el.style.display !== 'none') {
-                    
-                    // [이벤트] 좌측 타이핑 텍스트 제어
-                    const toggleText = (e) => {
-                        e.stopPropagation(); 
-                        if (typingContainer.classList.contains('visible')) hideTypingEffect();
-                        else showTypingEffect();
-                    };
-
-                    el.addEventListener('mouseenter', showTypingEffect);
-                    el.addEventListener('mouseleave', hideTypingEffect);
-                    el.addEventListener('click', toggleText);
-
-                    // 물리 엔진 데이터
                     const x = Math.random() * (1920 - 100);
                     const y = Math.random() * (1080 - 100);
                     const vx = (Math.random() - 0.5) * 4; 
                     const vy = (Math.random() - 0.5) * 4;
-                    
                     bubbles.push({
-                        el: el,
-                        x: x, y: y,
-                        vx: vx, vy: vy,
-                        width: el.clientWidth || 50, 
-                        height: el.clientHeight || 50
+                        el: el, x: x, y: y, vx: vx, vy: vy,
+                        width: el.clientWidth || 50, height: el.clientHeight || 50
                     });
                 }
             });
-
             function update() {
                 bubbles.forEach((b1, index) => {
-                    b1.x += b1.vx;
-                    b1.y += b1.vy;
-
+                    b1.x += b1.vx; b1.y += b1.vy;
                     if (b1.x <= 0 || b1.x + b1.width >= 1920) {
-                        b1.vx *= -1;
-                        b1.x = Math.max(0, Math.min(b1.x, 1920 - b1.width)); 
+                        b1.vx *= -1; b1.x = Math.max(0, Math.min(b1.x, 1920 - b1.width)); 
                     }
                     if (b1.y <= 0 || b1.y + b1.height >= 1080) {
-                        b1.vy *= -1;
-                        b1.y = Math.max(0, Math.min(b1.y, 1080 - b1.height));
+                        b1.vy *= -1; b1.y = Math.max(0, Math.min(b1.y, 1080 - b1.height));
                     }
-
                     for (let j = index + 1; j < bubbles.length; j++) {
                         const b2 = bubbles[j];
                         const dx = (b1.x + b1.width/2) - (b2.x + b2.width/2);
                         const dy = (b1.y + b1.height/2) - (b2.y + b2.height/2);
                         const distance = Math.sqrt(dx*dx + dy*dy);
                         const minDistance = (b1.width/2 + b2.width/2) * 0.8; 
-
                         if (distance < minDistance) {
                             const tempVx = b1.vx; const tempVy = b1.vy;
                             b1.vx = b2.vx; b1.vy = b2.vy;
                             b2.vx = tempVx; b2.vy = tempVy;
-                            
                             const angle = Math.atan2(dy, dx);
                             const overlap = minDistance - distance;
-                            b1.x += Math.cos(angle) * overlap / 2;
-                            b1.y += Math.sin(angle) * overlap / 2;
-                            b2.x -= Math.cos(angle) * overlap / 2;
-                            b2.y -= Math.sin(angle) * overlap / 2;
+                            b1.x += Math.cos(angle) * overlap / 2; b1.y += Math.sin(angle) * overlap / 2;
+                            b2.x -= Math.cos(angle) * overlap / 2; b2.y -= Math.sin(angle) * overlap / 2;
                         }
                     }
-
                     b1.el.style.left = b1.x + 'px';
                     b1.el.style.top = b1.y + 'px';
                 });
                 requestAnimationFrame(update);
             }
-
             setTimeout(() => {
                 bubbles.forEach(b => {
-                   if(b.el.offsetWidth > 0) {
-                       b.width = b.el.offsetWidth;
-                       b.height = b.el.offsetHeight;
-                   }
+                   if(b.el.offsetWidth > 0) { b.width = b.el.offsetWidth; b.height = b.el.offsetHeight; }
                 });
                 update();
             }, 500);
         }
 
-        // 7. 하단 푸터 텍스트 롤링
+        // 8. 푸터 텍스트 롤링
         function startFooterRolling() {
             const footerEl = document.getElementById('footer-text');
             const messages = [
-                'Hello, World.',
-                'This is Hannah.',
-                'Welcome to Human Protocol.',
-                'What time zone are you from?',
-                'Or what era are you from?',
-                'I come from all time and eras.',
-                'Would you like to join with me?'
+                'Hello, World.', 'This is Hannah.', 'Welcome to Human Protocol.',
+                'What time zone are you from?', 'Or what era are you from?',
+                'I come from all time and eras.', 'Would you like to join with me?'
             ];
             let index = 0;
-
             function showMessage() {
                 if (isFooterOverride) return;
                 footerEl.textContent = messages[index];
                 footerEl.classList.add('show');
-                setTimeout(() => {
-                    if (!isFooterOverride) {
-                        footerEl.classList.remove('show');
-                    }
-                }, 4000);
+                setTimeout(() => { if (!isFooterOverride) footerEl.classList.remove('show'); }, 4000);
                 index = (index + 1) % messages.length;
             }
-
             showMessage(); 
             setInterval(showMessage, 5000); 
         }
 
-        // [초기화 실행]
+        // [초기화]
         window.onload = function() {
             resetTimer(); 
             setupHoverEffects(); 
+            
+            // 타이핑 관련 (자동 시작 + 상호작용 연결)
+            startTypingLoop(); 
+            setupTypingInteractions(); 
+
             startGlitchEffect(); 
             setupBackgroundScroll(); 
             startFooterRolling();
             initBubbles(); 
         };
 
-        document.onmousemove = resetTimer; document.onkeypress = resetTimer;
-        document.ontouchstart = resetTimer; document.onclick = resetTimer;
+        // [이벤트 리스너]
+        function userInteracted() {
+            resetTimer();
+            forcePlayMusic(); 
+        }
+
+        document.onmousemove = userInteracted;
+        document.onkeypress = userInteracted;
+        document.ontouchstart = userInteracted;
+        document.onclick = userInteracted;
 
     </script>
 </body>
