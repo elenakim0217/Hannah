@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hannah Human Protocol</title>
+    <title>Human Protocol : Hannah</title>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css');
 
@@ -166,10 +166,15 @@
 <body>
     
     <iframe id="bg-music-frame" 
-            src="https://www.youtube.com/embed/fbR0t7CZ8X4?enablejsapi=1&autoplay=1&loop=1&playlist=fbR0t7CZ8X4&controls=0&showinfo=0&rel=0&mute=0" 
-            allow="autoplay; encrypted-media"
-            title="bgm">
+            width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" 
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A514744230&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+            style="position: absolute; width: 0; height: 0; border: 0; visibility: hidden;">
     </iframe>
+    
+    <div style="display:none; font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;">
+        <a href="https://soundcloud.com/user-505744085" title="Kiz3r Rips" target="_blank" style="color: #cccccc; text-decoration: none;">Kiz3r Rips</a> · 
+        <a href="https://soundcloud.com/user-505744085/space-fantasy-super-mario" title="Space Fantasy - Super Mario Galaxy" target="_blank" style="color: #cccccc; text-decoration: none;">Space Fantasy - Super Mario Galaxy</a>
+    </div>
 
     <div class="image-container">
         <img src="bg1.png" id="bg1" class="bg-img" alt="Background 1" style="pointer-events: auto;">
@@ -234,11 +239,12 @@
             idleTimer = setTimeout(showScreensaver, idleLimit);
         }
 
-        // 3. 배경음악
+        // 3. 배경음악 (SoundCloud 적용)
         let musicStarted = false;
         function forcePlayMusic() {
             if (!musicStarted) {
                 const iframe = document.getElementById('bg-music-frame');
+                // SoundCloud Iframe을 다시 로드하여 자동 재생 트리거 시도
                 const currentSrc = iframe.src;
                 iframe.src = currentSrc; 
                 musicStarted = true;
@@ -301,7 +307,7 @@
             const footerText = document.getElementById('footer-text'); 
 
             const texts = {
-                  1: "Untouched, 이은서 <br> <br> 디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠, 그리고 누군가의 얼굴을 긁어낸 날카로운 칼날까지. 권력은 눈에 거슬리는 이들을 처형하고, 남겨진 사진 위에서 한 번 더 살해했다. <br> 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해, 껍데기 뒤에 숨겨진 삭제된 진실을 발굴한다. 기록에서 지워진다는 것은 곧 존재의 소멸을 의미한다. 이것은 단순한 이미지의 수정이 아니다. 기억에 대한 사형 선고다.",
+                1: "Untouched, 이은서 <br> <br> 디지털 픽셀이 발명되기 훨씬 전부터 권력은 이미 역사를 '포토샵'하고 있었다. 스탈린의 에어브러시, 마오쩌둥의 덧칠, 그리고 누군가의 얼굴을 긁어낸 날카로운 칼날까지. 권력은 눈에 거슬리는 이들을 처형하고, 남겨진 사진 위에서 한 번 더 살해했다. <br> 본 프로젝트는 허공에서 부유하는 조작된 이미지들을 통해, 껍데기 뒤에 숨겨진 삭제된 진실을 발굴한다. 기록에서 지워진다는 것은 곧 존재의 소멸을 의미한다. 이것은 단순한 이미지의 수정이 아니다. 기억에 대한 사형 선고다.",
                 2: "CONTROLLED SPECTRUM : 통제된 스펙트럼, 박지우 <br><br> 본 프로젝트는 '색은 아름답다'는 인류의 오랜 낭만적 통념을 해체하고, 색을 생존과 직결된 '통제와 억압의 도구'로 재정의한다. 우리는 시대를 관통하며 가해진 색의 통제 방식을 추적한다. 19세기의 '초록'은 맹독성 비소로 인간의 육체를 물리적으로 파괴했고, 현대의 '파란색'은 스크린의 감시와 디지털 소외로 우리의 정신을 교란한다. 나아가 미래의 '사유화된 색'은 자본이 시각적 권리마저 독점하는 계급화된 통제를 예고한다. 아름다움 뒤에 은폐된 이 진실을 통해, 우리는 색이 권력에 의해 철저히 설계된 구조물임을 고발한다.",
                 3: "Golden Indexed, 김채린 <br><br> ‘기호를 활용해 외계인과 소통할 수 있을까?’ 인간의 읽기와 쓰기 체계 중 하나인 기호가 과연 상호작용이 가능한지를 실험해보는 도구 형태의 웹사이트이다. <br> 도구적 형태로 간접 소통해봄으로써 어쩌면 외계인과 소통은 불가능할지도 모르는 전제 하에 인간의 상상력의 한계를 넘어 상상해보고, 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
             };
