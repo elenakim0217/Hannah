@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Human Protocol : Hannah</title>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css');
 
@@ -12,7 +13,7 @@
             margin: 0; padding: 0;
             width: 100vw; height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            background-color: #000000; /* [수정됨] 배경 검은색 */
+            background-color: #000000;
             overflow: hidden;
             font-family: 'Wanted Sans Variable', -apple-system, sans-serif;
             user-select: none; 
@@ -23,7 +24,7 @@
             position: relative;
             width: 1920px; 
             height: 1080px; 
-            background-color: #000000; /* [수정됨] 컨테이너 배경도 검은색 */
+            background-color: #000000;
             overflow: hidden; 
         }
 
@@ -34,17 +35,10 @@
             transition: transform 0.3s ease;
         }
         
-        .layer-img:hover {
-            transform: scale(1.05);
-            cursor: pointer;
-        }
+        .layer-img:hover { transform: scale(1.05); cursor: pointer; }
 
-        /* [배경 및 오브젝트 위치 수정] */
         #bg1, #bg2, #bg3, #bg4 { width: 1920px; height: 1080px; top: 0; left: 0; }
-        #bg1 { z-index: 1; }
-        #bg2 { z-index: 2; }
-        #bg3 { z-index: 3; }
-        #bg4 { z-index: 4; }
+        #bg1 { z-index: 1; } #bg2 { z-index: 2; } #bg3 { z-index: 3; } #bg4 { z-index: 4; }
 
         .extra-img { z-index: 5; pointer-events: none; }
         
@@ -60,13 +54,8 @@
         
         /* [물방울 오브젝트] */
         .bubble-img { z-index: 6; pointer-events: auto; will-change: transform; }
-        #bg13 { width: 60px; }
-        #bg15 { width: 70px; }
-        #bg16 { width: 50px; }
-        #bg17 { width: 80px; }
-        #bg18 { width: 55px; }
-        #bg19 { width: 65px; }
-        #bg20 { width: 60px; }
+        #bg13 { width: 60px; } #bg15 { width: 70px; } #bg16 { width: 50px; }
+        #bg17 { width: 80px; } #bg18 { width: 55px; } #bg19 { width: 65px; } #bg20 { width: 60px; }
 
         /* 젤리 글리치 애니메이션 */
         @keyframes elastic-jelly {
@@ -83,21 +72,17 @@
 
         /* [좌측 정보 텍스트] */
         #text-pos-container {
-            position: absolute;
-            top: 50%; transform: translateY(-50%);
-            left: 70px; z-index: 9000;
-            pointer-events: none; text-align: left;
+            position: absolute; top: 50%; transform: translateY(-50%);
+            left: 70px; z-index: 9000; pointer-events: none; text-align: left;
             max-width: 1000px; word-break: keep-all;
         }
         .jagged-bg {
             background-color: #ffffff; color: #000000;            
             line-height: 1.6; padding: 5px 10px; 
             font-family: 'Wanted Sans Variable', sans-serif;
-            font-weight: 700; font-size: 18px; 
-            display: inline;
+            font-weight: 700; font-size: 18px; display: inline;
             -webkit-box-decoration-break: clone; box-decoration-break: clone;
-            white-space: pre-wrap; 
-            box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            white-space: pre-wrap; box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
         }
         .cursor::after {
             content: '|'; display: inline-block; margin-left: 2px; color: black;
@@ -107,10 +92,8 @@
 
         /* [중앙 인물 Hannah] */
         .center-wrapper {
-            position: absolute;
-            width: 800px; height: 800px;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            position: absolute; width: 800px; height: 800px;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; pointer-events: none; 
         }
         .center-wrapper img { pointer-events: auto; }
@@ -122,7 +105,6 @@
         #layer3 { width: 95px; top: 270px; left: 400px; z-index: 30; }
         #layer3:hover { z-index: 31; }
         
-        /* [화면 보호기] */
         #layer4 {
             position: absolute; width: 350px; top: 50%; left: 50%;
             transform: translate(-50%, -50%); object-fit: contain; 
@@ -132,8 +114,7 @@
 
         /* [호버 설명 텍스트] */
         #hover-description {
-            position: absolute;
-            top: 50%; left: 62%; transform: translateY(-50%);
+            position: absolute; top: 50%; left: 62%; transform: translateY(-50%);
             width: 450px; z-index: 9500; pointer-events: none; 
             opacity: 0; transition: opacity 0.3s ease;
         }
@@ -143,23 +124,25 @@
         #footer-text-container {
             position: absolute; top: 75%; left: 50%;
             transform: translateX(-50%); z-index: 9999;
-            text-align: center; width: 100%; 
-            pointer-events: auto; 
+            text-align: center; width: 100%; pointer-events: auto; 
         }
         #footer-text {
             background-color: #ffffff; color: #000000;
-            font-weight: 700; font-size: 20px;
-            padding: 5px 15px;
+            font-weight: 700; font-size: 20px; padding: 5px 15px;
             box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-            transition: opacity 0.5s ease-in-out; opacity: 0; 
-            cursor: pointer; 
+            transition: opacity 0.5s ease-in-out; opacity: 0; cursor: pointer; 
         }
         #footer-text.show { opacity: 1; }
 
-        /* [음악용 iframe (숨김)] */
+        /* [배경음악 iframe 스타일 수정] */
+        /* visibility: hidden 대신 opacity: 0 사용 (브라우저가 로딩하게 만들기 위함) */
         #bg-music-frame {
-            position: absolute; width: 0; height: 0;
-            border: 0; visibility: hidden;
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 1px; height: 1px; /* 최소 크기 유지 */
+            opacity: 0; /* 눈에만 안 보이게 */
+            z-index: -1; 
+            pointer-events: none;
         }
     </style>
 </head>
@@ -167,14 +150,8 @@
     
     <iframe id="bg-music-frame" 
             width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" 
-            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A514744230&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
-            style="position: absolute; width: 0; height: 0; border: 0; visibility: hidden;">
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A514744230&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
     </iframe>
-    
-    <div style="display:none; font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;">
-        <a href="https://soundcloud.com/user-505744085" title="Kiz3r Rips" target="_blank" style="color: #cccccc; text-decoration: none;">Kiz3r Rips</a> · 
-        <a href="https://soundcloud.com/user-505744085/space-fantasy-super-mario" title="Space Fantasy - Super Mario Galaxy" target="_blank" style="color: #cccccc; text-decoration: none;">Space Fantasy - Super Mario Galaxy</a>
-    </div>
 
     <div class="image-container">
         <img src="bg1.png" id="bg1" class="bg-img" alt="Background 1" style="pointer-events: auto;">
@@ -239,15 +216,32 @@
             idleTimer = setTimeout(showScreensaver, idleLimit);
         }
 
-        // 3. 배경음악 (SoundCloud 적용)
+        // 3. [중요 수정] 배경음악 제어 (SoundCloud Widget API 사용)
+        let widget;
         let musicStarted = false;
+
+        // 페이지 로드 시 위젯 준비
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframeElement = document.getElementById('bg-music-frame');
+            widget = SC.Widget(iframeElement);
+            
+            // 위젯이 준비되면 볼륨 등을 설정할 수 있음
+            widget.bind(SC.Widget.Events.READY, function() {
+                console.log('SoundCloud Widget Ready');
+            });
+            
+            // 음악이 끝나면 다시 처음부터 재생 (무한반복)
+            widget.bind(SC.Widget.Events.FINISH, function() {
+                widget.play();
+            });
+        });
+
+        // 사용자가 클릭/움직임 시 재생 시도
         function forcePlayMusic() {
-            if (!musicStarted) {
-                const iframe = document.getElementById('bg-music-frame');
-                // SoundCloud Iframe을 다시 로드하여 자동 재생 트리거 시도
-                const currentSrc = iframe.src;
-                iframe.src = currentSrc; 
-                musicStarted = true;
+            if (!musicStarted && widget) {
+                // Widget API를 통해 재생 명령
+                widget.play();
+                musicStarted = true; 
             }
         }
 
@@ -268,10 +262,8 @@
 
         function runTyping() {
             if (typingTimer) clearTimeout(typingTimer);
-            
             typeIndex = 0;
             if(typingTarget) typingTarget.textContent = "";
-            
             typeWriter();
         }
 
@@ -311,11 +303,7 @@
                 2: "CONTROLLED SPECTRUM : 통제된 스펙트럼, 박지우 <br><br> 본 프로젝트는 '색은 아름답다'는 인류의 오랜 낭만적 통념을 해체하고, 색을 생존과 직결된 '통제와 억압의 도구'로 재정의한다. 우리는 시대를 관통하며 가해진 색의 통제 방식을 추적한다. 19세기의 '초록'은 맹독성 비소로 인간의 육체를 물리적으로 파괴했고, 현대의 '파란색'은 스크린의 감시와 디지털 소외로 우리의 정신을 교란한다. 나아가 미래의 '사유화된 색'은 자본이 시각적 권리마저 독점하는 계급화된 통제를 예고한다. 아름다움 뒤에 은폐된 이 진실을 통해, 우리는 색이 권력에 의해 철저히 설계된 구조물임을 고발한다.",
                 3: "Golden Indexed, 김채린 <br><br> ‘기호를 활용해 외계인과 소통할 수 있을까?’ 인간의 읽기와 쓰기 체계 중 하나인 기호가 과연 상호작용이 가능한지를 실험해보는 도구 형태의 웹사이트이다. <br> 도구적 형태로 간접 소통해봄으로써 어쩌면 외계인과 소통은 불가능할지도 모르는 전제 하에 인간의 상상력의 한계를 넘어 상상해보고, 인간 문명 속 무모한 낭만과 영감의 시너지를 주고자 한다."
             };
-            const footerOverrides = {
-                1: "Present", 
-                2: "Past",    
-                3: "Future"   
-            };
+            const footerOverrides = { 1: "Present", 2: "Past", 3: "Future" };
 
             function onHover(layerId) {
                 if(texts[layerId]) {
@@ -330,7 +318,6 @@
                     footerText.classList.add('show');
                 }
             }
-
             function onLeave() {
                 descBox.classList.remove('visible');
                 isFooterOverride = false; 
@@ -350,21 +337,17 @@
             setInterval(() => {
                 bgs.forEach(bg => {
                     bg.classList.add('glitch-active');
-                    bg.addEventListener('animationend', () => {
-                        bg.classList.remove('glitch-active');
-                    }, { once: true });
+                    bg.addEventListener('animationend', () => { bg.classList.remove('glitch-active'); }, { once: true });
                 });
             }, 3000); 
         }
         function setupBackgroundScroll() {
             const bgs = document.querySelectorAll('.bg-img'); 
-            let currentX = 0;
-            let isScrolling;
+            let currentX = 0; let isScrolling;
             window.addEventListener('wheel', (e) => {
                 const moveAmount = e.deltaY * -0.8; 
                 currentX += moveAmount;
-                if (currentX > 300) currentX = 300;
-                if (currentX < -300) currentX = -300;
+                if (currentX > 300) currentX = 300; if (currentX < -300) currentX = -300;
                 bgs.forEach(bg => {
                     if (!bg.classList.contains('glitch-active')) {
                         const id = bg.id;
@@ -405,12 +388,8 @@
             function update() {
                 bubbles.forEach((b1, index) => {
                     b1.x += b1.vx; b1.y += b1.vy;
-                    if (b1.x <= 0 || b1.x + b1.width >= 1920) {
-                        b1.vx *= -1; b1.x = Math.max(0, Math.min(b1.x, 1920 - b1.width)); 
-                    }
-                    if (b1.y <= 0 || b1.y + b1.height >= 1080) {
-                        b1.vy *= -1; b1.y = Math.max(0, Math.min(b1.y, 1080 - b1.height));
-                    }
+                    if (b1.x <= 0 || b1.x + b1.width >= 1920) { b1.vx *= -1; b1.x = Math.max(0, Math.min(b1.x, 1920 - b1.width)); }
+                    if (b1.y <= 0 || b1.y + b1.height >= 1080) { b1.vy *= -1; b1.y = Math.max(0, Math.min(b1.y, 1080 - b1.height)); }
                     for (let j = index + 1; j < bubbles.length; j++) {
                         const b2 = bubbles[j];
                         const dx = (b1.x + b1.width/2) - (b2.x + b2.width/2);
@@ -427,15 +406,12 @@
                             b2.x -= Math.cos(angle) * overlap / 2; b2.y -= Math.sin(angle) * overlap / 2;
                         }
                     }
-                    b1.el.style.left = b1.x + 'px';
-                    b1.el.style.top = b1.y + 'px';
+                    b1.el.style.left = b1.x + 'px'; b1.el.style.top = b1.y + 'px';
                 });
                 requestAnimationFrame(update);
             }
             setTimeout(() => {
-                bubbles.forEach(b => {
-                   if(b.el.offsetWidth > 0) { b.width = b.el.offsetWidth; b.height = b.el.offsetHeight; }
-                });
+                bubbles.forEach(b => { if(b.el.offsetWidth > 0) { b.width = b.el.offsetWidth; b.height = b.el.offsetHeight; } });
                 update();
             }, 500);
         }
